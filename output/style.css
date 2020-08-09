@@ -1,0 +1,26 @@
+* {
+    padding: 0;
+    margin: 0;
+
+}
+table {
+    width: 100%;
+    border: 0;
+}
+tr {
+    
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+td {
+    border: none;
+    width: 11%;
+    height: 20vh;
+    margin: 0;
+    padding: 0;
+}
+.title {
+    width: 5%;
+    text-align: center;
+}
