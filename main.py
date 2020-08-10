@@ -21,6 +21,8 @@ def sorting_function ( a, b ):
 
 def analyse_video ( video_path, frame_pace=1, num_dom_color=8, clean_tmp=True, skip_saving=False ):
 
+    name   = os.path.basename(video_path).split('.')[0]
+
     if not skip_saving:
 
         if not os.path.isfile(video_path):
@@ -36,8 +38,6 @@ def analyse_video ( video_path, frame_pace=1, num_dom_color=8, clean_tmp=True, s
             width  = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
             fps    = int(cap.get(cv2.CAP_PROP_FPS))
 
-            name   = os.path.basename(video_path).split('.')[0]
-            
             print ( '> Total de frames.: %d' % length )
             print ( '> Altura do frame.: %d' % height )
             print ( '> Largura do frame: %d' % width )
@@ -105,6 +105,7 @@ def main () :
     frame_pace = 1
     num_dom_color = 8
     clean_tmp = False
+    skip_saving = False
 
     if not args.path:
         print('Você deve fornecer um caminho para um vídeo')
@@ -119,7 +120,10 @@ def main () :
     if args.num_cor_dom:
         num_dom_color = args.num_cor_dom[0]
 
-    analyse_video ( args.path[0], int(frame_pace), int(num_dom_color), clean_tmp )
+    if args.skip_saving:
+        skip_saving = args.skip_saving
+
+    analyse_video ( args.path[0], int(frame_pace), int(num_dom_color), clean_tmp, skip_saving )
 
 if __name__ == "__main__":
     main()
