@@ -19,7 +19,13 @@ def sorting_function ( a, b ):
     an, bn = int(re.search(reg, a).group(0)), int(re.search(reg, b).group(0))
     return an - bn
 
-def analyse_video ( video_path, frame_pace=1, num_dom_color=8, clean_tmp=True, skip_saving=False ):
+def analyse_video ( video_path, 
+                    frame_pace=1, 
+                    num_dom_color=8, 
+                    clean_tmp=True, 
+                    skip_saving=False, 
+                    skip_beginning=0, 
+                    skip_end=0 ):
 
     name   = os.path.basename(video_path).split('.')[0]
 
@@ -43,7 +49,10 @@ def analyse_video ( video_path, frame_pace=1, num_dom_color=8, clean_tmp=True, s
             print ( '> Largura do frame: %d' % width )
             print ( '> Framerate.......: %d' % fps )
 
-            current_frame = 0
+            if skip_end < length:
+                length -= skip_end
+
+            current_frame = skip_beginning if skip_beginning >= 0 and skip_beginning < length else 0
             success, frame = cap.read()
             
             if not os.path.isdir ( os.path.join ( img_dump_path, name )):
@@ -97,6 +106,8 @@ def main () :
     parser.add_argument('-p', '--path', nargs=1, action='store', help='Caminho do arquivo do vídeo')
     parser.add_argument('-f', '--frame-pace', nargs=1, action='store', help='Número de frames para pular')
     parser.add_argument('-n', '--num-cor-dom', nargs=1, action='store', help='Número de cores dominantes')
+    parser.add_argument('-sb', '--skip-beginning', nargs=1, action='store', help='Número de pixels a ignorar no início')
+    parser.add_argument('-se', '--skip-end', nargs=1, action='store', help='Número de pixels a ignorar no final')
     parser.add_argument('-c', '--clean-files', action='store_true', help='Limpar os frames após processar')
     parser.add_argument('-s', '--skip-saving', action='store_true', help='Skip saving images')
     
@@ -106,6 +117,8 @@ def main () :
     num_dom_color = 8
     clean_tmp = False
     skip_saving = False
+    skip_beginning = 0
+    skip_end = 0
 
     if not args.path:
         print('Você deve fornecer um caminho para um vídeo')
@@ -123,7 +136,13 @@ def main () :
     if args.skip_saving:
         skip_saving = args.skip_saving
 
-    analyse_video ( args.path[0], int(frame_pace), int(num_dom_color), clean_tmp, skip_saving )
+    if args.skip_beginning:
+        skip_beginning = int(args.skip_beginning)
+
+    if args.skip_end:
+        skip_end = int(args.skip_end)
+
+    analyse_video ( args.path[0], int(frame_pace), int(num_dom_color), clean_tmp, skip_saving, skip_beginning, skip_end )
 
 if __name__ == "__main__":
     main()
