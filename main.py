@@ -6,6 +6,7 @@ import argparse
 
 import numpy as np
 import regex as re
+import matplotlib.pyplot as plt
 
 from sys import argv
 from PIL import Image
@@ -120,8 +121,9 @@ def analyse_video ( video_path,
             data[( counter - ( counter % d )) // d ][ counter % d ] = [ r, g, b ]
             counter += 1
         img = Image.fromarray(data, 'RGB')
+        plt.imshow(img)
         img.save(os.path.join(output_path, name, 'img.png'))
-        img.show()
+        # img.show()
 
     if clean_tmp:
         shutil.rmtree(os.path.join ( img_dump_path, name ))
