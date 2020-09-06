@@ -138,6 +138,7 @@ def main () :
     parser.add_argument('-c', '--clean-files', action='store_true', help='Limpar os frames do disco após processar')
     parser.add_argument('-s', '--skip-saving', action='store_true', help='Skip saving images')
     parser.add_argument('-vi', '--visualize-img', action='store_true', help='Visualize image')
+    parser.add_argument('-h', '--help', action='help', help='Mostra essa mensagem e sai')
     
     args = parser.parse_args()
 
